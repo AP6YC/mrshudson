@@ -1,0 +1,10 @@
+pytest
+twine
+build
+setuptools
+flake8
+tqdm
+scikit-learn
+jupyterlab
+pandas
+numpy
