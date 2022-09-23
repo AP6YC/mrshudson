@@ -8,8 +8,9 @@ mrshudson's utility functions.
 # STANDARD IMPORTS
 # --------------------------------------------------------------------------- #
 
+import os
 from pathlib import Path
-import logging
+import logging as lg
 
 # --------------------------------------------------------------------------- #
 # CUSTOM IMPORTS
@@ -32,17 +33,36 @@ from . import constants
 # FUNCTIONS
 # --------------------------------------------------------------------------- #
 
+
+def get_methods(my_class):
+    """
+    Gets the non-wrangled methods and members of a class.
+    """
+    method_list = [method for method in dir(my_class) if method.startswith('__') is False]
+    return method_list
+
+
+def print_methods(my_class):
+    """
+    Prints the non-wrangled methods and members of a class.
+    """
+    print(get_methods(my_class))
+
+
 def get_project_root() -> Path:
     """Returns the top project directory.
     """
 
-    return Path(__file__).resolve().parent.parent.parent
+    # return Path(__file__).resolve().parent.parent.parent
+    return Path(os.getcwd())
+
 
 def projectdir(*args) -> Path:
     """Returns the DrWatson-like project directory.
     """
 
     return get_project_root().joinpath(*args)
+
 
 def load_layout(layout_file):
     """Loads and returns the provided YAML project layout file.
@@ -51,13 +71,16 @@ def load_layout(layout_file):
     try:
         with open(layout_file, 'r') as file:
             layout = yaml.safe_load(file)
-    except:
-        logging.warning("Could not open layout file, loading default layout.")
+    except Exception:
+        lg.warning("Could not open layout file, loading default layout.")
         layout = constants.DEFAULT_LAYOUT
 
     return layout
 
-LAYOUT = load_layout(projectdir(constants.DEFAULT_LAYOUT_FILE))
+
+# LAYOUT = load_layout(projectdir(constants.DEFAULT_LAYOUT_FILE))
+LAYOUT = constants.DEFAULT_LAYOUT
+
 
 def plotsdir(*args) -> Path:
     """Returns the DrWatson-like plots directory.
@@ -65,11 +88,13 @@ def plotsdir(*args) -> Path:
 
     return projectdir().joinpath(LAYOUT["plots_dir"], *args)
 
+
 def papersdir(*args) -> Path:
     """Returns the DrWatson-like papers directory.
     """
 
     return projectdir().joinpath(LAYOUT["papers_dir"], *args)
+
 
 def srcdir(*args) -> Path:
     """Returns the DrWatson-like source directory.
@@ -77,11 +102,13 @@ def srcdir(*args) -> Path:
 
     return projectdir().joinpath(LAYOUT["src_dir"], *args)
 
+
 def scriptsdir(*args) -> Path:
     """Returns the DrWatson-like scripts directory.
     """
 
     return projectdir().joinpath(LAYOUT["scripts_dir"], *args)
+
 
 def optsdir(*args) -> Path:
     """Returns the DrWatson-like options directory.
@@ -89,11 +116,13 @@ def optsdir(*args) -> Path:
 
     return projectdir().joinpath(LAYOUT["opts_dir"], *args)
 
+
 def modelsdir(*args) -> Path:
     """Returns the DrWatson-like models directory.
     """
 
     return projectdir().joinpath(LAYOUT["models_dir"], *args)
+
 
 def datadir(*args) -> Path:
     """Returns the DrWatson-like data directory.
@@ -101,11 +130,13 @@ def datadir(*args) -> Path:
 
     return projectdir().joinpath(LAYOUT["data_dir"], *args)
 
+
 def datadir_raw(*args) -> Path:
     """Returns the DrWatson-like raw data directory.
     """
 
     return datadir(LAYOUT["data_dir_raw"], *args)
+
 
 def datadir_pro(*args) -> Path:
     """Returns the DrWatson-like data directory.
@@ -113,17 +144,20 @@ def datadir_pro(*args) -> Path:
 
     return datadir(LAYOUT["data_dir_pro"], *args)
 
+
 def datadir_sims(*args) -> Path:
     """Returns the DrWatson-like data directory.
     """
 
     return datadir(LAYOUT["data_dir_sims"], *args)
 
+
 def dropboxdir(*args) -> Path:
     """Returns the DrWatson-like dropbox directory.
     """
 
     return projectdir().joinpath(LAYOUT["dropbox_dir"], *args)
+
 
 def localize(dest_name, *args) -> tuple:
     """Takes DrWatson directory functions and returns subdirectory functions with `dest_name`.
@@ -135,6 +169,7 @@ def localize(dest_name, *args) -> tuple:
     #     funcs.append(lambda *local_args, my_arg=arg: my_arg(dest_name, *local_args))
     # return funcs
 
+
 def localize_and_make(dest_name, *args) -> tuple:
     """Localize the directory functions to the `dest_name` and make the directories at the same time.
     """
@@ -144,3 +179,13 @@ def localize_and_make(dest_name, *args) -> tuple:
         func().mkdir(parents=True, exist_ok=True)
 
     return funcs
+
+
+def initialize_project():
+    """
+    Initializes a new mrshudon project
+    """
+
+    for key, local_path in constants.DEFAULT_LAYOUT.items():
+        lg.info(f"Making directory: {key}")
+        projectdir().joinpath(local_path).mkdir(parents=True, exist_ok=True)
