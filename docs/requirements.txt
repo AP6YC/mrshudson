@@ -1,1 +1,2 @@
-tqdm
+sphinx
+sphinx-rtd-theme
