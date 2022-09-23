@@ -8,8 +8,9 @@ mrshudson's utility functions.
 # STANDARD IMPORTS
 # --------------------------------------------------------------------------- #
 
+import os
 from pathlib import Path
-import logging
+import logging as lg
 
 # --------------------------------------------------------------------------- #
 # CUSTOM IMPORTS
@@ -52,7 +53,8 @@ def get_project_root() -> Path:
     """Returns the top project directory.
     """
 
-    return Path(__file__).resolve().parent.parent.parent
+    # return Path(__file__).resolve().parent.parent.parent
+    return Path(os.getcwd())
 
 
 def projectdir(*args) -> Path:
@@ -70,13 +72,14 @@ def load_layout(layout_file):
         with open(layout_file, 'r') as file:
             layout = yaml.safe_load(file)
     except Exception:
-        logging.warning("Could not open layout file, loading default layout.")
+        lg.warning("Could not open layout file, loading default layout.")
         layout = constants.DEFAULT_LAYOUT
 
     return layout
 
 
-LAYOUT = load_layout(projectdir(constants.DEFAULT_LAYOUT_FILE))
+# LAYOUT = load_layout(projectdir(constants.DEFAULT_LAYOUT_FILE))
+LAYOUT = constants.DEFAULT_LAYOUT
 
 
 def plotsdir(*args) -> Path:
@@ -176,3 +179,13 @@ def localize_and_make(dest_name, *args) -> tuple:
         func().mkdir(parents=True, exist_ok=True)
 
     return funcs
+
+
+def initialize_project():
+    """
+    Initializes a new mrshudon project
+    """
+
+    for key, local_path in constants.DEFAULT_LAYOUT.items():
+        lg.info(f"Making directory: {key}")
+        projectdir().joinpath(local_path).mkdir(parents=True, exist_ok=True)
