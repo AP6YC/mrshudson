@@ -3,6 +3,7 @@ pytest
 twine
 build
 sphinx
+sphinx-rtd-theme
 setuptools
 flake8
 tqdm
