@@ -2,6 +2,7 @@ pyyaml
 pytest
 twine
 build
+sphinx
 setuptools
 flake8
 tqdm
