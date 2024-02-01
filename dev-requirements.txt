@@ -1,13 +1,15 @@
-pyyaml
-pytest
-twine
+# Packaging tools
 build
+setuptools
+
+# Documentation tools
+twine
 sphinx
 sphinx-rtd-theme
-setuptools
-flake8
-tqdm
-scikit-learn
-jupyterlab
-pandas
-numpy
+
+# Added tools for development
+# tqdm
+# scikit-learn
+# jupyterlab
+# pandas
+# numpy
