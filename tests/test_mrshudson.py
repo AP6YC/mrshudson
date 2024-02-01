@@ -9,13 +9,13 @@ Tests the mrshudson package.
 # --------------------------------------------------------------------------- #
 
 import os
-from pathlib import Path
+# from pathlib import Path
 import logging as lg
-from typing import (
-    List,
-    Dict,
-    Tuple,
-)
+# from typing import (
+#     List,
+#     Dict,
+#     Tuple,
+# )
 
 # import tempfile
 
@@ -23,7 +23,7 @@ from typing import (
 # CUSTOM IMPORTS
 # --------------------------------------------------------------------------- #
 
-import pytest
+# import pytest
 # import numpy as np
 # import pandas as pd
 
@@ -65,7 +65,6 @@ class TestMrsHudson:
 
         lg.info("First test!")
 
-
         assert True
 
     def test_initialize(self, tmp_path):
@@ -75,8 +74,13 @@ class TestMrsHudson:
 
         # Change to the temporary directory from the default pytest fixture
         os.chdir(tmp_path)
+        lg.info(f"Current directory: {os.getcwd()}")
 
-        # Initialize a project
+        # Set the new projectdir
+        mrshudson.set_projectdir(tmp_path.stem)
+        lg.info(f"New projectdir: {mrshudson.projectdir()}")
+
         mrshudson.initialize_project()
+        # Initialize a project
 
         assert True

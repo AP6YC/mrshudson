@@ -19,6 +19,7 @@ mrshudson's utility functions.
 import os
 from pathlib import Path
 import logging as lg
+import warnings
 
 # -----------------------------------------------------------------------------
 # EXTERNAL DEPENDENCIES
@@ -42,8 +43,22 @@ from . import constants
 class ProjectState():
 
     def __init__(self):
-        self.projectdir: Path = Path(os.getcwd())
+        self.projectdir: Path = self.default_projectdir()
+        self.projectdir_was_set: bool = False
         return
+
+    def default_projectdir(self):
+        return Path(os.getcwd())
+
+    def set_projectdir(self, new_projectdir: Path):
+        self.projectdir = new_projectdir
+        self.projectdir_was_set = True
+
+    def get_project_root(self):
+        if self.projectdir_was_set:
+            return self.projectdir
+        else:
+            return self.default_projectdir()
 
 # -----------------------------------------------------------------------------
 # GLOBAL CONSTANTS
@@ -66,7 +81,8 @@ def set_projectdir(
     project_state: ProjectState = globalprojectstate,
 ):
     # Initiate the local directory for searching up
-    local_dir = Path(os.getcwd())
+    # local_dir = Path(os.getcwd())
+    local_dir = project_state.default_projectdir()
     local_projectname = project_name
 
     # lg.warning(f"local dir: {local_dir}")
@@ -81,27 +97,15 @@ def set_projectdir(
         local_parts = local_dir.parts[0:index+1]
         # Set the project state's top dir to the recombined path
         project_state.projectdir = Path(*local_parts)
+
+        # projedirwasset
     else:
-        raise Warning("The provided project name is not a parent of the current working directory.")
+        # raise Warning("The provided project name is not a parent of the current working directory.")
+        warnings.warn("The provided project name is not a parent of the current working directory.")
 
     # lg.warning(f"new projectdir: {project_state.projectdir}")
 
     return
-
-
-def get_methods(my_class):
-    """
-    Gets the non-wrangled methods and members of a class.
-    """
-    method_list = [method for method in dir(my_class) if method.startswith('__') is False]
-    return method_list
-
-
-def print_methods(my_class):
-    """
-    Prints the non-wrangled methods and members of a class.
-    """
-    print(get_methods(my_class))
 
 
 def get_project_root(project_state: ProjectState = globalprojectstate) -> Path:
