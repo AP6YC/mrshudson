@@ -21,6 +21,7 @@ DEFAULT_LAYOUT = {
     "src_dir": Path("src"),
     "opts_dir": Path("opts"),
     "data_dir": Path("data"),
+    "models_dir": Path("models"),
     "data_dir_raw": Path("data").joinpath("exp_raw"),
     "data_dir_pro": Path("data").joinpath("exp_pro"),
     "data_dir_sims": Path("data").joinpath("sims"),

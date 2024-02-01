@@ -24,8 +24,8 @@ from typing import (
 # --------------------------------------------------------------------------- #
 
 import pytest
-import numpy as np
-import pandas as pd
+# import numpy as np
+# import pandas as pd
 
 # --------------------------------------------------------------------------- #
 # LOCAL IMPORTS
@@ -64,6 +64,7 @@ class TestMrsHudson:
         """
 
         lg.info("First test!")
+
 
         assert True
 
