@@ -160,7 +160,7 @@ def dropboxdir(*args) -> Path:
 
 
 def localize(dest_name, *args) -> tuple:
-    """Takes DrWatson directory functions and returns subdirectory functions with `dest_name`.
+    """Takes DrWatson-like directory functions and returns subdirectory functions with `dest_name`.
     """
 
     return tuple((lambda *local_args, my_arg=arg: my_arg(dest_name, *local_args)) for arg in args)
