@@ -6,11 +6,11 @@ Usage
 Installation
 ------------
 
-To use **cvi**, first install it using pip:
+To use **mrshudson**, first install it using pip:
 
 .. code-block:: console
 
-   (.venv) $ pip install cvi
+   (.venv) $ pip install mrshudson
 
 Instantiation
 -------------
