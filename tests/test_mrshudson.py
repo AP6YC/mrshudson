@@ -17,24 +17,11 @@ import logging as lg
 #     Tuple,
 # )
 
-# import tempfile
-
-# --------------------------------------------------------------------------- #
-# CUSTOM IMPORTS
-# --------------------------------------------------------------------------- #
-
-# import pytest
-# import numpy as np
-# import pandas as pd
-
 # --------------------------------------------------------------------------- #
 # LOCAL IMPORTS
 # --------------------------------------------------------------------------- #
 
 import src.mrshudson as mrshudson
-
-# print(f"\nTesting path is: {os.getcwd()}")
-# lg.info(f"\nTesting path is: {os.getcwd()}")
 
 # --------------------------------------------------------------------------- #
 # UTILITY FUNCTIONS
@@ -50,26 +37,17 @@ import src.mrshudson as mrshudson
 
 
 class TestMrsHudson:
-    """
-    Pytest class for mrshudson unit tests.
+    """Pytest class for mrshudson unit tests.
     """
 
     def test_test_dir(self):
+        """Boilerplate test for showing where the unit tests occur.
+        """
         lg.info(f"\nTesting path is: {os.getcwd()}")
         assert True
 
-    def test_mrshudson(self):
-        """
-        Boilerplate test.
-        """
-
-        lg.info("First test!")
-
-        assert True
-
     def test_initialize(self, tmp_path):
-        """
-        Tests the initialization of the default layout.
+        """Tests the initialization of the default layout.
         """
 
         # Change to the temporary directory from the default pytest fixture
@@ -80,7 +58,11 @@ class TestMrsHudson:
         mrshudson.set_projectdir(tmp_path.stem)
         lg.info(f"New projectdir: {mrshudson.projectdir()}")
 
-        mrshudson.initialize_project()
         # Initialize a project
+        mrshudson.initialize_project()
 
-        assert True
+        # Test that the initialied directories exist
+        for dirfunc in mrshudson.DIRFUNCS:
+            assert dirfunc().exists()
+
+        return

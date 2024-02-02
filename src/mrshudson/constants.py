@@ -11,8 +11,8 @@ from pathlib import Path
 # --------------------------------------------------------------------------- #
 
 DEFAULT_LAYOUT_FILE = 'layout.yml'
-
-DEFAULT_FEATURE_FILE = 'features.yml'
+"""The location of the default layout file
+"""     # pylint: disable=W0105
 
 DEFAULT_LAYOUT = {
     "plots_dir": Path("plots"),
@@ -22,22 +22,13 @@ DEFAULT_LAYOUT = {
     "opts_dir": Path("opts"),
     "data_dir": Path("data"),
     "models_dir": Path("models"),
-    "data_dir_raw": Path("data").joinpath("exp_raw"),
-    "data_dir_pro": Path("data").joinpath("exp_pro"),
-    "data_dir_sims": Path("data").joinpath("sims"),
+    "notebooks_dir": Path("notebooks"),
+    "data_dir_raw": Path("data", "exp_raw"),
+    "data_dir_pro": Path("data", "exp_pro"),
+    "data_dir_sims": Path("data", "sims"),
 }
-
-# DEFAULT_LAYOUT = {
-#     "plots_dir": "plots",
-#     "papers_dir": "papers",
-#     "scripts_dir": "scripts",
-#     "src_dir": "src",
-#     "opts_dir": "opts",
-#     "data_dir": "data",
-#     "data_dir_raw": "data/exp_raw",
-#     "data_dir_pro": "data/exp_pro",
-#     "data_dir_sims": "data/sims",
-# }
+"""The default mrshudson project layout.
+"""     # pylint: disable=W0105
 
 # DEFAULT_TEMPLATE = [
 #   "_research",
