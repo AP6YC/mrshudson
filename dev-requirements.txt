@@ -8,6 +8,7 @@ sphinx
 sphinx-rtd-theme
 
 # Added tools for development
+jupyterlab
 # tqdm
 # scikit-learn
 # jupyterlab

@@ -2,12 +2,12 @@ name: "Sphinx: Render docs"
 
 # on: push
 on:
-    push:
-        branches:
-          - main
-          - develop
-        tags: '*'
-      pull_request:
+  push:
+    branches:
+      - main
+      - develop
+    tags: '*'
+  pull_request:
 
 jobs:
   build:
