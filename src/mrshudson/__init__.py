@@ -25,8 +25,8 @@ import warnings
 # EXTERNAL DEPENDENCIES
 # -----------------------------------------------------------------------------
 
-import yaml
-from multimethod import multimethod
+# import yaml
+# from multimethod import multimethod
 
 # -----------------------------------------------------------------------------
 # LOCAL IMPORTS
@@ -43,18 +43,47 @@ from . import constants
 class ProjectState():
 
     def __init__(self):
+        """Initializes the project state with the :func:`~default_projectdir` function and an unset.
+        """
+
         self.projectdir: Path = self.default_projectdir()
+        """The project directory.
+        """
+
         self.projectdir_was_set: bool = False
+        """A flag for if the projectdir was manually set.
+
+        If low, the default the :func:`~default_projectdir` function is used to get the current :attr:`~ProjectState.projectdir`.
+        """
         return
 
     def default_projectdir(self):
+        """Generates the default projectdir directory as the current working directory at runtime.
+        """
+
         return Path(os.getcwd())
 
     def set_projectdir(self, new_projectdir: Path):
+        """Sets the projectdir from the provided path.
+
+        This function also informs the :attr:`~project_was_set` asdf.
+
+        Args:
+            new_projectdir (Path): the new `pathlib.Path` that points to the correct project directory.
+        """
+
         self.projectdir = new_projectdir
         self.projectdir_was_set = True
 
+        return
+
     def get_projectdir(self):
+        """Returns the current top-level project directory.
+
+        If the value is manually set, it returns :attr:`~ProjectState.projectdir`.
+        Otherwise, the :func:`~default_projectdir` is generated at runtime depending on the current context.
+        """
+
         if self.projectdir_was_set:
             return self.projectdir
         else:
@@ -66,17 +95,27 @@ class ProjectState():
 
 
 globalprojectstate = ProjectState()
+"""The default project state that is used when mrshudson directory functions.
+"""
 
 # -----------------------------------------------------------------------------
 # FUNCTIONS
 # -----------------------------------------------------------------------------
 
 
-# @multimethod
 def set_projectdir(
     project_name: str,
     project_state: ProjectState = globalprojectstate,
 ):
+    """Sets the top projectdir location for all future calls in this session.
+
+    This function takes the name of the project and searches upwards for the location of that directory to set it as the current projectdir that is returned when calling :func:`~projectdir`.
+
+    This function assumes two things: firstly that the current working directory of the callee (e.g., script, notebook, etc.) is at or below the directory, and secondly that the provided directory name exists in the first place.
+
+    Args:
+        project_name (str): the name of the directory that is at or above of the current working directory to set as the value that is returned when calling :func:`~projectdir`.
+    """
     # Initiate the local directory for searching up
     local_dir = project_state.default_projectdir()
     local_projectname = project_name

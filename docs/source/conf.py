@@ -14,7 +14,7 @@ sys.path.insert(0, os.path.abspath('../../src/mrshudson'))
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'mrshudson'
-copyright = '2022, Sasha Petrenko'
+copyright = '2024, Sasha Petrenko'
 author = 'Sasha Petrenko'
 release = '0.1.0-alpha.1'
 version = '0.1.0-alpha.1'
@@ -30,11 +30,11 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.intersphinx',
     'sphinx.ext.napoleon',
-    'sphinx_rtd_dark_mode',
+    # 'sphinx_rtd_dark_mode',
     # 'sphinx_autopackagesummary',
 ]
 
-default_dark_mode = False
+# default_dark_mode = False
 
 autosummary_generate_overwrite = True
 
@@ -55,7 +55,8 @@ exclude_patterns = []
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 # html_theme = 'alabaster'
-html_theme = 'sphinx_rtd_theme'
+# html_theme = 'sphinx_rtd_theme'
+html_theme = 'furo'
 
 html_static_path = ['_static']
 
