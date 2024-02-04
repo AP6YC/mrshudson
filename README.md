@@ -2,9 +2,10 @@
 
 > Behind every great man there is a patient British landlady who periodically brings tea and unsolicited advice.
 
-A Python scientific project assistant package in the spirit of DrWatson.jl
+A Python scientific project assistant package in the spirit of [DrWatson.jl][drwatson-docs].
 
 [docs-url]: https://github.com/AP6YC/mrshudson
+[drwatson-docs]: https://juliadynamics.github.io/DrWatson.jl/dev/
 
 ## Table of Contents
 
@@ -17,7 +18,7 @@ A Python scientific project assistant package in the spirit of DrWatson.jl
 
 ## Usage
 
-TODO
+`mrshudson` is an assistant module for scientific projects in Python.
 
 ## Attribution
 

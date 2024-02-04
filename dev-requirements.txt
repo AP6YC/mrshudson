@@ -6,6 +6,7 @@ setuptools
 twine
 sphinx
 sphinx-rtd-theme
+sphinx-rtd-dark-mode
 
 # Added tools for development
 jupyterlab

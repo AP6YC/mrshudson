@@ -30,8 +30,11 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.intersphinx',
     'sphinx.ext.napoleon',
+    'sphinx_rtd_dark_mode',
     # 'sphinx_autopackagesummary',
 ]
+
+default_dark_mode = False
 
 autosummary_generate_overwrite = True
 
@@ -47,8 +50,6 @@ intersphinx_disabled_domains = ['std']
 
 templates_path = ['_templates']
 exclude_patterns = []
-
-
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
