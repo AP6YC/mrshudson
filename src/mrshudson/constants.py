@@ -39,7 +39,7 @@ DEFAULT_LAYOUT: TypeLayout = {
     "data_dir_pro": "data/exp_pro",
     "data_dir_sims": "data/sims",
 }
-"""The default mrshudson project layout.
+"""The default :mod:`~mrshudson` project layout.
 """     # pylint: disable=W0105
 
 

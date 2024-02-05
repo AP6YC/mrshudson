@@ -6,6 +6,7 @@ __version__ = "0.1.0-alpha.1"
 
 # from .lib import *
 
+
 """
     lib.py
 
@@ -52,7 +53,7 @@ class ProjectState():
         """Initializes the project state with the :func:`~default_projectdir` function and an unset.
         """
 
-        self.projectdir: Path = self.default_projectdir()
+        self.projectdir: Path = self._default_projectdir()
         """The project directory.
         """
 
@@ -61,21 +62,22 @@ class ProjectState():
 
         If low, the default the :func:`~default_projectdir` function is used to get the current :attr:`~ProjectState.projectdir`.
         """
+
         return
 
-    def default_projectdir(self):
+    def _default_projectdir(self):
         """Generates the default projectdir directory as the current working directory at runtime.
         """
 
         return Path(os.getcwd())
 
-    def set_projectdir(self, new_projectdir: Path):
+    def _set_projectdir(self, new_projectdir: Path):
         """Sets the projectdir from the provided path.
 
-        This function also informs the :attr:`~project_was_set` asdf.
+        This function also informs the :attr:`~project_was_set` attribute that the :attr:`~ProjectState.projectdir`. was set.
 
         Args:
-            new_projectdir (Path): the new `pathlib.Path` that points to the correct project directory.
+            new_projectdir (Path): the new `pathlib.Path` that points to new :attr:`~ProjectState.projectdir` to use.
         """
 
         self.projectdir = new_projectdir
@@ -93,7 +95,7 @@ class ProjectState():
         if self.projectdir_was_set:
             return self.projectdir
         else:
-            return self.default_projectdir()
+            return self._default_projectdir()
 
 # -----------------------------------------------------------------------------
 # GLOBAL CONSTANTS
@@ -122,8 +124,9 @@ def set_projectdir(
     Args:
         project_name (str): the name of the directory that is at or above of the current working directory to set as the value that is returned when calling :func:`~projectdir`.
     """
+
     # Initiate the local directory for searching up
-    local_dir = project_state.default_projectdir()
+    local_dir = project_state._default_projectdir()
     local_projectname = project_name
 
     # If the name is in the path parts, set the projectdir to the
@@ -133,7 +136,8 @@ def set_projectdir(
         # Recombine the path up to the index
         local_parts = local_dir.parts[0:index+1]
         # Set the project state's top dir to the recombined path
-        project_state.projectdir = Path(*local_parts)
+        # project_state.projectdir = Path(*local_parts)
+        project_state._set_projectdir(Path(*local_parts))
     else:
         warnings.warn("The provided project name is not a parent of the current working directory.")
 
