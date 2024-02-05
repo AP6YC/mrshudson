@@ -21,6 +21,12 @@ from pathlib import Path
 import logging as lg
 import warnings
 
+from typing import (
+    List,
+    Callable,
+    TypeAlias,
+)
+
 # -----------------------------------------------------------------------------
 # EXTERNAL DEPENDENCIES
 # -----------------------------------------------------------------------------
@@ -266,21 +272,28 @@ def datadir_sims(*args) -> Path:
     return projectdir(LAYOUT["data_dir_sims"], *args)
 
 
-def initialize_project(layout=constants.DEFAULT_LAYOUT):
+def initialize_project(
+    layout=constants.DEFAULT_LAYOUT
+):
     """Initializes a new mrshudon project from the provided project layout dictionary.
 
     Args:
         layout=constants.DEFAULT_LAYOUT
     """
 
+    # For each
     for key, local_path in layout.items():
         lg.info(f"Making directory: {key} at {local_path}")
-        projectdir(local_path).mkdir(parents=True, exist_ok=True)
+        # projectdir(local_path).mkdir(parents=True, exist_ok=True)
+        projectdir(Path(local_path)).mkdir(parents=True, exist_ok=True)
 
     return
 
 
-DIRFUNCS = [
+TypeDirFuncs: TypeAlias = List[Callable]
+
+
+DIRFUNCS: TypeDirFuncs = [
     projectdir,
     plotsdir,
     papersdir,
