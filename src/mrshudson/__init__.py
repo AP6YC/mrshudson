@@ -141,8 +141,24 @@ def get_project_root(project_state: ProjectState = globalprojectstate) -> Path:
     return project_state.get_projectdir()
 
 
+def docstring_parameter(*sub):
+    def dec(obj):
+        obj.__doc__ = obj.__doc__.format(*sub)
+        return obj
+    return dec
+
+
+ARGS_ARG = """
+
+Args:
+    *args: the subdirectories/files to join to the path.
+"""
+
+
+@docstring_parameter(ARGS_ARG)
 def projectdir(*args) -> Path:
     """Returns the top project directory with optional added path parts.
+    {0}
     """
 
     return get_project_root().joinpath(*args)
@@ -151,78 +167,100 @@ def projectdir(*args) -> Path:
 LAYOUT = constants.DEFAULT_LAYOUT
 
 
+@docstring_parameter(ARGS_ARG)
 def plotsdir(*args) -> Path:
     """Returns the DrWatson-like plots directory.
+    {0}
     """
 
     return projectdir(LAYOUT["plots_dir"], *args)
 
 
+@docstring_parameter(ARGS_ARG)
 def papersdir(*args) -> Path:
     """Returns the DrWatson-like papers directory.
+    {0}
     """
 
     return projectdir(LAYOUT["papers_dir"], *args)
 
 
+@docstring_parameter(ARGS_ARG)
 def srcdir(*args) -> Path:
     """Returns the DrWatson-like source directory.
+    {0}
     """
 
     return projectdir(LAYOUT["src_dir"], *args)
 
 
+@docstring_parameter(ARGS_ARG)
 def scriptsdir(*args) -> Path:
     """Returns the DrWatson-like scripts directory.
+    {0}
     """
 
     return projectdir(LAYOUT["scripts_dir"], *args)
 
 
+@docstring_parameter(ARGS_ARG)
 def optsdir(*args) -> Path:
     """Returns the DrWatson-like options directory.
+    {0}
     """
 
     return projectdir(LAYOUT["opts_dir"], *args)
 
 
+@docstring_parameter(ARGS_ARG)
 def modelsdir(*args) -> Path:
     """Returns the DrWatson-like models directory.
+    {0}
     """
 
     return projectdir(LAYOUT["models_dir"], *args)
 
 
+@docstring_parameter(ARGS_ARG)
 def notebooksdir(*args) -> Path:
     """Returns the DrWatson-like notebooks directory.
+    {0}
     """
 
     return projectdir(LAYOUT["notebooks_dir"], *args)
 
 
+@docstring_parameter(ARGS_ARG)
 def datadir(*args) -> Path:
     """Returns the DrWatson-like data directory.
+    {0}
     """
 
     return projectdir(LAYOUT["data_dir"], *args)
 
 
+@docstring_parameter(ARGS_ARG)
 def datadir_raw(*args) -> Path:
     """Returns the DrWatson-like raw data directory.
+    {0}
     """
 
     return projectdir(LAYOUT["data_dir_raw"], *args)
 
 
+@docstring_parameter(ARGS_ARG)
 def datadir_pro(*args) -> Path:
     """Returns the DrWatson-like processed data directory.
+    {0}
     """
 
     return projectdir(LAYOUT["data_dir_pro"], *args)
 
 
+@docstring_parameter(ARGS_ARG)
 def datadir_sims(*args) -> Path:
     """Returns the DrWatson-like simulations data directory.
+    {0}
     """
 
     return projectdir(LAYOUT["data_dir_sims"], *args)
@@ -230,6 +268,9 @@ def datadir_sims(*args) -> Path:
 
 def initialize_project(layout=constants.DEFAULT_LAYOUT):
     """Initializes a new mrshudon project from the provided project layout dictionary.
+
+    Args:
+        layout=constants.DEFAULT_LAYOUT
     """
 
     for key, local_path in layout.items():

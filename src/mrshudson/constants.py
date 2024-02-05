@@ -6,6 +6,8 @@ This file contains constant values for the Python components of the DeepClusteri
 
 from pathlib import Path
 
+from typing import Dict
+
 # --------------------------------------------------------------------------- #
 # DEFAULTS
 # --------------------------------------------------------------------------- #
@@ -14,7 +16,9 @@ DEFAULT_LAYOUT_FILE = 'layout.yml'
 """The location of the default layout file
 """     # pylint: disable=W0105
 
-DEFAULT_LAYOUT = {
+TYPE_LAYOUT = Dict[str, Path]
+
+DEFAULT_LAYOUT: TYPE_LAYOUT = {
     "plots_dir": Path("plots"),
     "papers_dir": Path("papers"),
     "scripts_dir": Path("scripts"),
