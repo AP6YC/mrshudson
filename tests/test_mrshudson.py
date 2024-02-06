@@ -5,27 +5,17 @@ Tests the mrshudson package.
 """
 
 # --------------------------------------------------------------------------- #
-# STANDARD IMPORTS
+# STDLIB IMPORTS
 # --------------------------------------------------------------------------- #
 
 import os
-# from pathlib import Path
 import logging as lg
-# from typing import (
-#     List,
-#     Dict,
-#     Tuple,
-# )
 
 # --------------------------------------------------------------------------- #
 # LOCAL IMPORTS
 # --------------------------------------------------------------------------- #
 
-import src.mrshudson as mrshudson
-
-# --------------------------------------------------------------------------- #
-# UTILITY FUNCTIONS
-# --------------------------------------------------------------------------- #
+import src.mrshudson as mrs
 
 # --------------------------------------------------------------------------- #
 # FIXTURES
@@ -55,14 +45,14 @@ class TestMrsHudson:
         lg.info(f"Current directory: {os.getcwd()}")
 
         # Set the new projectdir
-        mrshudson.set_projectdir(tmp_path.stem)
-        lg.info(f"New projectdir: {mrshudson.projectdir()}")
+        mrs.project.set_projectdir(tmp_path.stem)
+        lg.info(f"New projectdir: {mrs.dirs.projectdir()}")
 
         # Initialize a project
-        mrshudson.initialize_project()
+        mrs.dirs.initialize_project()
 
         # Test that the initialied directories exist
-        for dirfunc in mrshudson.DIRFUNCS:
+        for dirfunc in mrs.dirs.DIRFUNCS:
             assert dirfunc().exists()
 
         return
