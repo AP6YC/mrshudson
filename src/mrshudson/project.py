@@ -1,8 +1,4 @@
-"""
-    project.py
-
-# Description
-This file contains the definitions for `mrshudson` project structures and states.
+"""The definitions for `mrshudson` project structures and states.
 """
 
 # --------------------------------------------------------------------------- #
@@ -53,9 +49,11 @@ DEFAULT_LAYOUT: TypeLayout = {
 
 
 class ProjectState():
+    """The stateful information for a `mrshudson` project.
+    """
 
     def __init__(self):
-        """Initializes the project state with the :func:`~default_projectdir` function and an unset.
+        """Initializes the project state with the :func:`~default_projectdir` function.
         """
 
         self.projectdir: Path = self._default_projectdir()

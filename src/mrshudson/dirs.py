@@ -1,8 +1,4 @@
-"""
-    dirs.py
-
-# Description
-This file contains all of the directory utilities for the `mrshudson` package.
+"""All of the directory utilities for the `mrshudson` package.
 """
 
 # --------------------------------------------------------------------------- #
@@ -230,6 +226,7 @@ def initialize_project(
 
     # Iterate over the layout of the provided project state
     for key, local_path in project_state.layout.items():
+        # Optional logging
         lg.info(f"Making directory: {key} at {local_path}")
         # projectdir(local_path).mkdir(parents=True, exist_ok=True)
         projectdir(Path(local_path), project_state=project_state).mkdir(parents=True, exist_ok=True)
