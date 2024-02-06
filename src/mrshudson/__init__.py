@@ -132,7 +132,7 @@ class ProjectState():
 # -----------------------------------------------------------------------------
 
 
-globalprojectstate: ProjectState = ProjectState()
+DEFAULT_PROJECT_STATE: ProjectState = ProjectState()
 """ProjectState: The default project state that is used when mrshudson directory functions.
 """
 
@@ -150,7 +150,7 @@ _ARG_ARGS = """
 """
 
 _ARG_PROJECT_STATE = """
-    project_state (ProjectState, optional): The stateful representation of the project structure to use. Defaults to globalprojectstate
+    project_state (ProjectState, optional): The stateful representation of the project structure to use. Defaults to :const:`DEFAULT_PROJECT_STATE`.
 """
 
 _ARG_ARGS_PROJECT_STATE = f"""
@@ -205,7 +205,7 @@ def _docstring_parameter(*sub):
 @_docstring_parameter(_ARG_PROJECT_STATE)
 def set_projectdir(
     project_name: str,
-    project_state: ProjectState = globalprojectstate,
+    project_state: ProjectState = DEFAULT_PROJECT_STATE,
 ):
     """Sets the top projectdir location for all future calls in this session.
 
@@ -246,7 +246,7 @@ def set_projectdir(
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
 def projectdir(
     *args,
-    project_state: ProjectState = globalprojectstate,
+    project_state: ProjectState = DEFAULT_PROJECT_STATE,
 ) -> Path:
     """Returns the top project directory with optional added path parts.
     {0}
@@ -259,7 +259,7 @@ def projectdir(
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
 def plotsdir(
     *args,
-    project_state: ProjectState = globalprojectstate,
+    project_state: ProjectState = DEFAULT_PROJECT_STATE,
 ) -> Path:
     """Returns the DrWatson-like plots directory.
     {0}
@@ -271,7 +271,7 @@ def plotsdir(
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
 def papersdir(
     *args,
-    project_state: ProjectState = globalprojectstate,
+    project_state: ProjectState = DEFAULT_PROJECT_STATE,
 ) -> Path:
     """Returns the DrWatson-like papers directory.
     {0}
@@ -283,7 +283,7 @@ def papersdir(
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
 def srcdir(
     *args,
-    project_state: ProjectState = globalprojectstate,
+    project_state: ProjectState = DEFAULT_PROJECT_STATE,
 ) -> Path:
     """Returns the DrWatson-like source directory.
     {0}
@@ -295,7 +295,7 @@ def srcdir(
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
 def scriptsdir(
     *args,
-    project_state: ProjectState = globalprojectstate,
+    project_state: ProjectState = DEFAULT_PROJECT_STATE,
 ) -> Path:
     """Returns the DrWatson-like scripts directory.
     {0}
@@ -307,7 +307,7 @@ def scriptsdir(
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
 def optsdir(
     *args,
-    project_state: ProjectState = globalprojectstate,
+    project_state: ProjectState = DEFAULT_PROJECT_STATE,
 ) -> Path:
     """Returns the DrWatson-like options directory.
     {0}
@@ -319,7 +319,7 @@ def optsdir(
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
 def modelsdir(
     *args,
-    project_state: ProjectState = globalprojectstate,
+    project_state: ProjectState = DEFAULT_PROJECT_STATE,
 ) -> Path:
     """Returns the DrWatson-like models directory.
     {0}
@@ -331,7 +331,7 @@ def modelsdir(
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
 def notebooksdir(
     *args,
-    project_state: ProjectState = globalprojectstate,
+    project_state: ProjectState = DEFAULT_PROJECT_STATE,
 ) -> Path:
     """Returns the DrWatson-like notebooks directory.
     {0}
@@ -343,7 +343,7 @@ def notebooksdir(
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
 def datadir(
     *args,
-    project_state: ProjectState = globalprojectstate,
+    project_state: ProjectState = DEFAULT_PROJECT_STATE,
 ) -> Path:
     """Returns the DrWatson-like data directory.
     {0}
@@ -355,7 +355,7 @@ def datadir(
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
 def datadir_raw(
     *args,
-    project_state: ProjectState = globalprojectstate,
+    project_state: ProjectState = DEFAULT_PROJECT_STATE,
 ) -> Path:
     """Returns the DrWatson-like raw data directory.
     {0}
@@ -367,7 +367,7 @@ def datadir_raw(
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
 def datadir_pro(
     *args,
-    project_state: ProjectState = globalprojectstate,
+    project_state: ProjectState = DEFAULT_PROJECT_STATE,
 ) -> Path:
     """Returns the DrWatson-like processed data directory.
     {0}
@@ -379,7 +379,7 @@ def datadir_pro(
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
 def datadir_sims(
     *args,
-    project_state: ProjectState = globalprojectstate,
+    project_state: ProjectState = DEFAULT_PROJECT_STATE,
 ) -> Path:
     """Returns the DrWatson-like simulations data directory.
     {0}
@@ -390,7 +390,7 @@ def datadir_sims(
 
 def initialize_project(
     # layout=DEFAULT_LAYOUT
-    project_state: ProjectState = globalprojectstate,
+    project_state: ProjectState = DEFAULT_PROJECT_STATE,
 ):
     """Initializes a new mrshudon project from the provided project layout dictionary.
     """
