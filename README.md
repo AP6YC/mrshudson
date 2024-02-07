@@ -6,19 +6,31 @@ A Python scientific project assistant package in the spirit of [DrWatson.jl][drw
 
 [docs-url]: https://github.com/AP6YC/mrshudson
 [drwatson-docs]: https://juliadynamics.github.io/DrWatson.jl/dev/
+[julia-url]: https://julialang.org/
 
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
+- [Overview](#overview)
 - [Usage](#usage)
 - [Attribution](#attribution)
   - [Authors](#authors)
   - [Assets](#assets)
   - [Fonts](#fonts)
 
-## Usage
+## Overview
 
 `mrshudson` is an assistant module for scientific projects in Python.
+It is built in the spirit of the great [DrWatson.jl][drwatson-docs] project for the [Julia][julia-url] programming language.
+Just as Dr. John H. Watson assists in the detective work of the great Sherlock Holmes, so too does the landlady of 221B Baker Street Mrs. Martha Louise Hudson provide the facilities, the tea, and the space for the incoherent ramblings and occasional indoor revolver practice of her tenants.
+
+This project aims to accomplish similar goals to the [DrWatson.jl][drwatson-docs] project by virtue of being *scientific project assistant* software:
+
+- asd
+
+## Usage
+
+TODO
 
 ## Attribution
 
