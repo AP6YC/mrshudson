@@ -215,7 +215,6 @@ DIRFUNCS: TypeDirFuncs = [
 
 @_docstring_parameter(_ARG_PROJECT_STATE)
 def initialize_project(
-    # layout=DEFAULT_LAYOUT
     project_state: ProjectState = DEFAULT_PROJECT_STATE,
 ):
     """Initializes a new mrshudon project from the provided project layout dictionary.
