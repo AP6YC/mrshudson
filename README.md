@@ -32,6 +32,11 @@ This project aims to accomplish similar goals to the [DrWatson.jl][drwatson-docs
 - **Saving Tools** (*TODO*)
 - **Running and Listing Simulations** (*TODO*)
 
+`mrshudson` also aims to be Pythonic in its namespace management, so each utility is separated into relevant modules encapsulating their functionality:
+
+- `mrshudson.project`: project setup utilities.
+- `mrshudson.dirs`: directory functions.
+
 ## Installation
 
 `mrshudson` is listed on PyPI, so you can install the latest version from the command line with `pip`:
