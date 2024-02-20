@@ -6,3 +6,6 @@
 
 # Testing requirements
 -r tests/requirements.txt
+
+# Documentation requirements
+-r docs/requirements.txt

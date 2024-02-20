@@ -1,2 +1,4 @@
+# Documentation tools
 sphinx
-sphinx-rtd-theme
+# sphinx-rtd-theme
+furo

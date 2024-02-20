@@ -1,13 +1,7 @@
 # Packaging tools
 build
 setuptools
-
-# Documentation tools
 twine
-sphinx
-# sphinx-rtd-theme
-# sphinx-rtd-dark-mode
-furo
 
 # Added tools for development
 jupyterlab
