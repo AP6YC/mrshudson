@@ -16,6 +16,9 @@ jobs:
         contents: write
     steps:
     - uses: actions/checkout@v4
+    - name: Install Dependencies
+      run: \
+        pip install .[docs]
     - name: Build HTML
       uses: ammaraskar/sphinx-action@master
     - name: Upload artifacts

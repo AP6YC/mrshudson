@@ -1,4 +1,0 @@
-# Documentation tools
-sphinx
-# sphinx-rtd-theme
-furo
