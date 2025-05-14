@@ -5,7 +5,6 @@
 # STDLIB IMPORTS
 # --------------------------------------------------------------------------- #
 
-import os
 import warnings
 from pathlib import Path
 
@@ -78,7 +77,7 @@ class ProjectState():
         """Generates the default projectdir directory as the current working directory at runtime.
         """
 
-        return Path(os.getcwd())
+        return Path.cwd()
 
     def _set_projectdir(self, new_projectdir: Path):
         """Sets the projectdir from the provided path.

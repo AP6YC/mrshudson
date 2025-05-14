@@ -19,13 +19,28 @@ jobs:
     - name: Install Dependencies
       run: \
         pip install .[docs]
-    - name: Build HTML
-      uses: ammaraskar/sphinx-action@master
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: html-docs
-        path: docs/build/html/
+    # - name: Build HTML
+    #   uses: ammaraskar/sphinx-action@master
+    # - name: Upload artifacts
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: html-docs
+    #     path: docs/build/html/
+    - name: Sphinx Build Develop
+      run: |
+        git checkout develop
+        git fetch --all
+        git pull --all
+        cd ${{ github.workspace }}/docs
+        # make html
+        sphinx-multiversion source build/html
+
+    - name: Sphinx Build Main
+      run: |
+        git checkout main
+        cd ${{ github.workspace }}/docs
+        sphinx-multiversion source build/html
+
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       if: github.ref == 'refs/heads/main'
