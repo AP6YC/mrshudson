@@ -12,10 +12,22 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # python-version: ["3.8", "3.9", "3.10", "3.11"]
+        python-version:
+            - "3.12"
     permissions:
         contents: write
     steps:
     - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+        # cache-dependency-path: |
+          # **/requirements.txt
     - name: Install Dependencies
       run: \
         pip install .[docs]
