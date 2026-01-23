@@ -30,7 +30,8 @@ jobs:
           # **/requirements.txt
     - name: Install Dependencies
       run: \
-        pip install .[docs]
+        python -m pip install --upgrade pip
+        python -m pip install .[docs]
     # - name: Build HTML
     #   uses: ammaraskar/sphinx-action@master
     # - name: Upload artifacts
