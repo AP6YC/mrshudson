@@ -1,22 +1,11 @@
-"""All of the directory utilities for the `mrshudson` package.
-"""
+"""Directory utilities for the `mrshudson` package."""
 
 # --------------------------------------------------------------------------- #
 # STDLIB IMPORTS
 # --------------------------------------------------------------------------- #
 
 from pathlib import Path
-import logging as lg
-
-# --------------------------------------------------------------------------- #
-# EXTERNAL DEPENDENCY IMPORTS
-# --------------------------------------------------------------------------- #
-
-from typing_extensions import (
-    TypeAlias,
-    List,
-    Callable,
-)
+from typing import Callable, TypeAlias
 
 # --------------------------------------------------------------------------- #
 # LOCAL IMPORTS
@@ -31,6 +20,8 @@ from ._utils import (
 from .project import (
     ProjectState,
     DEFAULT_PROJECT_STATE,
+    TypeLayout,
+    initialize_project as _initialize_project,
 )
 
 # --------------------------------------------------------------------------- #
@@ -60,7 +51,11 @@ def plotsdir(
     {0}
     """
 
-    return projectdir(project_state.layout["plots_dir"], *args)
+    return projectdir(
+        project_state.layout["plots_dir"],
+        *args,
+        project_state=project_state,
+    )
 
 
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
@@ -72,7 +67,11 @@ def papersdir(
     {0}
     """
 
-    return projectdir(project_state.layout["papers_dir"], *args)
+    return projectdir(
+        project_state.layout["papers_dir"],
+        *args,
+        project_state=project_state,
+    )
 
 
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
@@ -84,7 +83,11 @@ def srcdir(
     {0}
     """
 
-    return projectdir(project_state.layout["src_dir"], *args)
+    return projectdir(
+        project_state.layout["src_dir"],
+        *args,
+        project_state=project_state,
+    )
 
 
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
@@ -96,7 +99,11 @@ def scriptsdir(
     {0}
     """
 
-    return projectdir(project_state.layout["scripts_dir"], *args)
+    return projectdir(
+        project_state.layout["scripts_dir"],
+        *args,
+        project_state=project_state,
+    )
 
 
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
@@ -108,7 +115,11 @@ def optsdir(
     {0}
     """
 
-    return projectdir(project_state.layout["opts_dir"], *args)
+    return projectdir(
+        project_state.layout["opts_dir"],
+        *args,
+        project_state=project_state,
+    )
 
 
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
@@ -120,7 +131,11 @@ def modelsdir(
     {0}
     """
 
-    return projectdir(project_state.layout["models_dir"], *args)
+    return projectdir(
+        project_state.layout["models_dir"],
+        *args,
+        project_state=project_state,
+    )
 
 
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
@@ -132,7 +147,11 @@ def notebooksdir(
     {0}
     """
 
-    return projectdir(project_state.layout["notebooks_dir"], *args)
+    return projectdir(
+        project_state.layout["notebooks_dir"],
+        *args,
+        project_state=project_state,
+    )
 
 
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
@@ -144,7 +163,11 @@ def datadir(
     {0}
     """
 
-    return projectdir(project_state.layout["data_dir"], *args)
+    return projectdir(
+        project_state.layout["data_dir"],
+        *args,
+        project_state=project_state,
+    )
 
 
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
@@ -156,7 +179,11 @@ def datadir_raw(
     {0}
     """
 
-    return projectdir(project_state.layout["data_dir_raw"], *args)
+    return projectdir(
+        project_state.layout["data_dir_raw"],
+        *args,
+        project_state=project_state,
+    )
 
 
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
@@ -168,7 +195,11 @@ def datadir_pro(
     {0}
     """
 
-    return projectdir(project_state.layout["data_dir_pro"], *args)
+    return projectdir(
+        project_state.layout["data_dir_pro"],
+        *args,
+        project_state=project_state,
+    )
 
 
 @_docstring_parameter(_ARG_ARGS_PROJECT_STATE)
@@ -180,14 +211,18 @@ def datadir_sims(
     {0}
     """
 
-    return projectdir(project_state.layout["data_dir_sims"], *args)
+    return projectdir(
+        project_state.layout["data_dir_sims"],
+        *args,
+        project_state=project_state,
+    )
 
 
 # --------------------------------------------------------------------------- #
 # DIRFUNCS
 # --------------------------------------------------------------------------- #
 
-TypeDirFuncs: TypeAlias = List[Callable]
+TypeDirFuncs: TypeAlias = list[Callable]
 """TypeAlias: A type alias for the list of directory functions.
 """
 
@@ -200,6 +235,7 @@ DIRFUNCS: TypeDirFuncs = [
     scriptsdir,
     optsdir,
     modelsdir,
+    notebooksdir,
     datadir,
     datadir_raw,
     datadir_pro,
@@ -215,19 +251,24 @@ DIRFUNCS: TypeDirFuncs = [
 
 @_docstring_parameter(_ARG_PROJECT_STATE)
 def initialize_project(
+    path: str | Path | None = None,
+    *,
+    layout: TypeLayout | None = None,
     project_state: ProjectState = DEFAULT_PROJECT_STATE,
-):
+    exist_ok: bool = True,
+) -> Path:
     """Initializes a new mrshudon project from the provided project layout dictionary.
 
     Args:
-    {0}
+        path: Optional project root to initialize and set on ``project_state``.
+        layout: Optional project layout. Defaults to ``project_state.layout``.
+        {0}
+        exist_ok: Passed to :meth:`pathlib.Path.mkdir` for each directory.
     """
 
-    # Iterate over the layout of the provided project state
-    for key, local_path in project_state.layout.items():
-        # Optional logging
-        lg.info(f"Making directory: {key} at {local_path}")
-        # projectdir(local_path).mkdir(parents=True, exist_ok=True)
-        projectdir(Path(local_path), project_state=project_state).mkdir(parents=True, exist_ok=True)
-
-    return
+    return _initialize_project(
+        path,
+        layout=layout,
+        project_state=project_state,
+        exist_ok=exist_ok,
+    )
