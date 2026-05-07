@@ -8,6 +8,7 @@ mrshudson - a Python scientific project assistant package.
 
 from . import (
     dirs,
+    naming,
     project,
 )
 
@@ -21,5 +22,6 @@ __version__ = "0.0.1"
 # Exported names when using *
 __all__ = [
     "dirs",
+    "naming",
     "project",
 ]

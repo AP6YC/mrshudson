@@ -28,7 +28,7 @@ Just as Dr. John H. Watson assists in the detective work of the great Sherlock H
 This project aims to accomplish similar goals to the [DrWatson.jl][drwatson-docs] project by virtue of being *scientific project assistant* software:
 
 - **Project Setup**: `mrshudson` provides tools for defining a project layout, initializing a project's directory structure, and accessing these locations with directory functions that point to the correct location no matter where they are accessed from.
-- **Naming Simulations** (*TODO*)
+- **Naming Simulations**: deterministic names for Python parameter containers.
 - **Saving Tools** (*TODO*)
 - **Running and Listing Simulations** (*TODO*)
 
@@ -36,6 +36,7 @@ This project aims to accomplish similar goals to the [DrWatson.jl][drwatson-docs
 
 - `mrshudson.project`: project setup utilities.
 - `mrshudson.dirs`: directory functions.
+- `mrshudson.naming`: deterministic names for parameter containers.
 
 ## Installation
 
@@ -62,6 +63,13 @@ mrs.project.set_projectdir("my_project_name")
 
 > NOTE: this assumes that `my_project_name/` is the name of the project top directory and that this function is run at or below this directory.
 
+If your project contains a `pyproject.toml` or `.git` directory, you can also
+discover the project root automatically:
+
+```python
+mrs.project.set_projectdir()
+```
+
 If you wish, you may initialize a new project with the default layout in your current directory as follows:
 
 ```python
@@ -78,17 +86,30 @@ mrs.dirs.projectdir("subdir", "my_file.py)
 All of the project directory accessors are listed below:
 
 ```python
-mrs.dirs.projectdir()     # The top of the projec
+mrs.dirs.projectdir()     # The top of the project
 mrs.dirs.plotsdir()       # The plots directory
 mrs.dirs.papersdir()      # The papers directory
 mrs.dirs.srcdir()         # The location of the project source files
 mrs.dirs.scriptsdir()     # The experiment scripts
 mrs.dirs.optsdir()        # Experiment option files
 mrs.dirs.modelsdir()      # The location for model files
+mrs.dirs.notebooksdir()   # The notebooks directory
 mrs.dirs.datadir()        # The top data directory
 mrs.dirs.datadir_raw()    # Raw data files
 mrs.dirs.datadir_pro()    # Processed data files
 mrs.dirs.datadir_sims()   # Simulation results
+```
+
+You can create deterministic names for parameter containers:
+
+```python
+config = {"mode": "double", "a": 0.153456453, "b": 5}
+
+mrs.naming.savename(config)
+# 'a=0.153_b=5_mode=double'
+
+mrs.naming.savename(config, prefix="sim", suffix="json")
+# 'sim_a=0.153_b=5_mode=double.json'
 ```
 
 For more details, please see the `mrshudson` documentation.
