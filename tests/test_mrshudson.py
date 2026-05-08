@@ -1,5 +1,7 @@
 """Tests for the mrshudson package."""
 
+import shutil
+import subprocess
 from dataclasses import dataclass
 
 import pytest
@@ -118,3 +120,70 @@ def test_parse_savename_keeps_decimal_values_without_suffix():
     assert prefix == ""
     assert params == {"a": 0.153, "b": 5}
     assert suffix == ""
+
+
+def test_save_and_load_json_creates_parent_directory(tmp_path):
+    path = tmp_path / "nested" / "result.json"
+    data = {"a": 1, "b": [2, 3]}
+
+    written = mrs.saving.save(path, data)
+
+    assert written == path
+    assert path.exists()
+    assert mrs.saving.load(path) == data
+
+
+def test_save_refuses_overwrite_when_requested(tmp_path):
+    path = tmp_path / "result.json"
+    mrs.saving.save(path, {"a": 1})
+
+    with pytest.raises(FileExistsError):
+        mrs.saving.save(path, {"a": 2}, overwrite=False)
+
+
+def test_safe_save_increments_existing_filename(tmp_path):
+    path = tmp_path / "result.json"
+    mrs.saving.save(path, {"a": 1})
+
+    written = mrs.saving.safe_save(path, {"a": 2})
+
+    assert written == tmp_path / "result_1.json"
+    assert mrs.saving.load(path) == {"a": 1}
+    assert mrs.saving.load(written) == {"a": 2}
+
+
+def test_save_and_load_pickle(tmp_path):
+    path = tmp_path / "result.pkl"
+    data = {"values": (1, 2, 3)}
+
+    mrs.saving.save(path, data)
+
+    assert mrs.saving.load(path) == data
+
+
+def test_tag_save_adds_metadata(tmp_path):
+    path = tmp_path / "result.json"
+
+    written = mrs.saving.tag_save(path, {"value": 1})
+    loaded = mrs.saving.load(written)
+
+    assert loaded["value"] == 1
+    assert "_mrshudson" in loaded
+    assert loaded["_mrshudson"]["package"] == "mrshudson"
+    assert loaded["_mrshudson"]["git"]["available"] is False
+    assert "timestamp_utc" in loaded["_mrshudson"]
+
+
+@pytest.mark.skipif(shutil.which("git") is None, reason="git is unavailable")
+def test_git_metadata_detects_repository_and_dirty_state(tmp_path):
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    subprocess.run(["git", "init"], cwd=repo, check=True, capture_output=True)
+    (repo / "result.txt").write_text("untracked\n")
+
+    description = mrs.saving.gitdescribe(repo)
+
+    assert mrs.saving.gitroot(repo) == repo.resolve()
+    assert mrs.saving.isdirty(repo)
+    assert description["available"] is True
+    assert description["root"] == str(repo.resolve())

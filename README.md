@@ -29,7 +29,7 @@ This project aims to accomplish similar goals to the [DrWatson.jl][drwatson-docs
 
 - **Project Setup**: `mrshudson` provides tools for defining a project layout, initializing a project's directory structure, and accessing these locations with directory functions that point to the correct location no matter where they are accessed from.
 - **Naming Simulations**: deterministic names for Python parameter containers.
-- **Saving Tools** (*TODO*)
+- **Saving Tools**: save and load JSON or pickle files, avoid overwrites, and attach Git metadata to results.
 - **Running and Listing Simulations** (*TODO*)
 
 `mrshudson` also aims to be Pythonic in its namespace management, so each utility is separated into relevant modules encapsulating their functionality:
@@ -37,6 +37,7 @@ This project aims to accomplish similar goals to the [DrWatson.jl][drwatson-docs
 - `mrshudson.project`: project setup utilities.
 - `mrshudson.dirs`: directory functions.
 - `mrshudson.naming`: deterministic names for parameter containers.
+- `mrshudson.saving`: saving, loading, and reproducibility metadata.
 
 ## Installation
 
@@ -110,6 +111,27 @@ mrs.naming.savename(config)
 
 mrs.naming.savename(config, prefix="sim", suffix="json")
 # 'sim_a=0.153_b=5_mode=double.json'
+```
+
+You can save simulation results using JSON or pickle based on the file suffix.
+Parent directories are created automatically:
+
+```python
+result = {"config": config, "mean": 1.25}
+path = mrs.dirs.datadir_sims(mrs.naming.savename(config, suffix="json"))
+
+mrs.saving.save(path, result)
+mrs.saving.load(path)
+```
+
+To avoid overwriting an existing result, use `safe_save`. To record Git metadata
+alongside the result, use `tag_save`:
+
+```python
+mrs.saving.safe_save(path, result)
+
+mrs.saving.tag_save(path, result)
+# Adds a "_mrshudson" metadata entry with timestamp and Git information.
 ```
 
 For more details, please see the `mrshudson` documentation.
