@@ -3,11 +3,10 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-import os
 import sys
-sys.path.insert(0, os.path.abspath('../..'))
-sys.path.insert(0, os.path.abspath('../../src'))
-sys.path.insert(0, os.path.abspath('../../src/mrshudson'))
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'src'))
 
 
 # -- Project information -----------------------------------------------------
@@ -49,7 +48,7 @@ intersphinx_disabled_domains = ['std']
 
 
 templates_path = ['_templates']
-exclude_patterns = []
+exclude_patterns = ['_autosummary']
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -58,7 +57,7 @@ exclude_patterns = []
 # html_theme = 'sphinx_rtd_theme'
 html_theme = 'furo'
 
-html_static_path = ['_static']
+html_static_path = []
 
 # -- Options for EPUB output
 epub_show_urls = 'footnote'
