@@ -1,6 +1,0 @@
-pandas
-numpy
-pyyaml
-tqdm
-coverage
-pytest-cov
