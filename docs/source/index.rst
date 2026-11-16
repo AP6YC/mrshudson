@@ -1,7 +1,9 @@
-.. mrshudson documentation master file
+.. image:: https://github.com/AP6YC/FileStorage/blob/main/mrshudson/header.png?raw=true
+   :alt: mrshudson
+   :align: center
 
-Welcome to mrshudson's documentation!
-====================================================
+``mrshudson``: A Scientific Python Personal Assistant
+=====================================================
 
 .. toctree::
    :maxdepth: 2
