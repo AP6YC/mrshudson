@@ -8,10 +8,15 @@ import os
 import pickle
 import subprocess
 import tempfile
+import math
+import time as clock
+from contextlib import contextmanager
 from collections.abc import Mapping, MutableMapping
 from datetime import date, datetime, time, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
+
+from . import dirs, naming
 
 JSON_SUFFIXES = {".json"}
 """Filename suffixes handled by the JSON serializer."""
@@ -181,14 +186,114 @@ def save(
             sort_keys=sort_keys,
             pickle_protocol=pickle_protocol,
         )
-        if target.exists() and not overwrite:
-            raise FileExistsError(f"Refusing to overwrite existing file: {target}")
-        os.replace(temporary_path, target)
+        if overwrite:
+            os.replace(temporary_path, target)
+        else:
+            # Publish only if the destination is still absent, without a race.
+            os.link(temporary_path, target)
     finally:
         if temporary_path.exists():
             temporary_path.unlink()
 
     return target
+
+
+@contextmanager
+def _result_lock(target: Path, enabled: bool, timeout: float):
+    """Serialize cooperating producers using an exclusively created directory."""
+
+    if not enabled:
+        yield
+        return
+    lock_path = target.with_name(target.name + ".lock")
+    deadline = clock.monotonic() + timeout
+    while True:
+        try:
+            lock_path.mkdir()
+            break
+        except FileExistsError:
+            if clock.monotonic() >= deadline:
+                raise TimeoutError(f"Timed out waiting for result lock: {lock_path}")
+            clock.sleep(min(0.05, max(0, deadline - clock.monotonic())))
+    try:
+        yield
+    finally:
+        lock_path.rmdir()
+
+
+def produce_or_load(
+    func: Callable[[Any], Any],
+    config: Any,
+    directory: str | Path | None = None,
+    *,
+    filename: str | None = None,
+    suffix: str = "json",
+    naming_options: Mapping[str, Any] | None = None,
+    force: bool = False,
+    tagged: bool = False,
+    git_path: str | Path | None = None,
+    lock: bool = True,
+    lock_timeout: float = 60.0,
+) -> tuple[Any, Path]:
+    """Load a cached result or compute and atomically save ``func(config)``.
+
+    Args:
+        func: Producer called with the original configuration on a cache miss.
+        config: Parameter container accepted by :func:`mrshudson.naming.savename`.
+        directory: Cache directory; defaults to :func:`mrshudson.dirs.datadir_sims`.
+        filename: Explicit basename, including extension, instead of a generated name.
+        suffix: Generated filename extension (json, pkl, or pickle).
+        naming_options: Additional savename arguments. Float precision defaults
+            to ``sigdigits=None`` here. Do not include ``suffix``.
+        force: Recompute and replace an existing result on success.
+        tagged: Include reproducibility metadata via :func:`tag`.
+        git_path: Repository for tagging; defaults to the configured project root.
+        lock: Serialize cooperating calls using a sibling ``.lock`` directory.
+        lock_timeout: Maximum seconds to wait for a lock; zero means no waiting.
+
+    Returns:
+        The deserialized saved data and its absolute path, on both hits and misses.
+        JSON conversions and optional tagging therefore apply consistently.
+
+    Errors from the producer, serializer, or cache loader propagate. Failed
+    production or serialization leaves any previous cache intact. Cache identity
+    is the filename only: code changes and omitted parameters do not invalidate it.
+    A process killed while holding a lock may leave a lock directory; remove it
+    manually only after confirming that its producer is no longer running.
+    """
+
+    if not math.isfinite(lock_timeout) or lock_timeout < 0:
+        raise ValueError("lock_timeout must be finite and non-negative.")
+    if filename is not None and naming_options is not None:
+        raise ValueError("Use filename or naming_options, not both.")
+    if filename is None:
+        options = {"sigdigits": None, **dict(naming_options or {})}
+        if "suffix" in options:
+            raise ValueError("Pass suffix directly, not in naming_options.")
+        filename = naming.savename(config, suffix=suffix, **options)
+        if filename == "." + suffix.lstrip("."):
+            raise ValueError("No naming parameters; supply an explicit filename.")
+    if not filename or filename in {".", ".."} or any(
+        char in filename for char in ("/", "\\", "\x00")
+    ):
+        raise ValueError("filename must be a non-empty basename.")
+    root = dirs.datadir_sims() if directory is None else Path(directory)
+    target = root.expanduser().resolve() / filename
+    _normalise_serializer(target)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with _result_lock(target, lock, lock_timeout):
+        if target.exists() and not force:
+            return load(target), target
+        result = func(config)
+        if tagged:
+            result = tag(result, path=dirs.projectdir() if git_path is None else git_path)
+        try:
+            save(target, result, overwrite=force)
+        except FileExistsError:
+            if force:
+                raise
+            # A producer without our lock may have published first.
+        return load(target), target
 
 
 def load(
@@ -477,6 +582,7 @@ __all__ = [
     "gitroot",
     "isdirty",
     "load",
+    "produce_or_load",
     "safe_path",
     "safe_save",
     "safesave",

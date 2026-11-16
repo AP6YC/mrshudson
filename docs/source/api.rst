@@ -64,6 +64,7 @@ Saving and Metadata
    :nosignatures:
 
    mrshudson.saving.save
+   mrshudson.saving.produce_or_load
    mrshudson.saving.load
    mrshudson.saving.safe_path
    mrshudson.saving.safe_save

@@ -23,3 +23,4 @@ experiment parameters. Python 3.10 or newer is required.
 
    usage/directories
    usage/naming
+   usage/workflow

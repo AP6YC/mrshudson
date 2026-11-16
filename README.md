@@ -30,7 +30,7 @@ This project aims to accomplish similar goals to the [DrWatson.jl][drwatson-docs
 - **Project Setup**: `mrshudson` provides tools for defining a project layout, initializing a project's directory structure, and accessing these locations with directory functions that point to the correct location no matter where they are accessed from.
 - **Naming Simulations**: deterministic names for Python parameter containers.
 - **Saving Tools**: save and load JSON or pickle files, avoid overwrites, and attach Git metadata to results.
-- **Running and Listing Simulations** (*TODO*)
+- **Running Simulations**: reuse cached results with `produce_or_load` (result collection is planned).
 
 `mrshudson` also aims to be Pythonic in its namespace management, so each utility is separated into relevant modules encapsulating their functionality:
 
@@ -135,6 +135,21 @@ mrs.saving.tag_save(path, result)
 ```
 
 For more details, please see the `mrshudson` documentation.
+
+Reuse an experiment result or compute it on the first call:
+
+```python
+def simulate(config):
+    return {"score": config["seed"] * 2}
+
+result, path = mrs.saving.produce_or_load(simulate, {"seed": 7})
+```
+
+Results default to JSON in `datadir_sims()`. Use `force=True` to refresh,
+`tagged=True` for Git metadata, or `filename="experiment-v2.json"` for an explicit
+cache key. The filename determines reuse; code changes and parameters omitted
+from the name do not invalidate the cache. Calls use atomic saves and a per-result
+lock by default.
 
 ## Attribution
 

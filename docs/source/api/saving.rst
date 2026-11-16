@@ -5,6 +5,8 @@ Saving and Metadata
 
 .. currentmodule:: mrshudson.saving
 
+.. autofunction:: produce_or_load
+
 .. autofunction:: save
 
 .. autofunction:: load
